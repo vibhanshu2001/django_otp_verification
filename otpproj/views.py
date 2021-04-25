@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate,login
 from codes.forms import CodeForm
 from users.models import CustomUser
+from .utils import send_sms
 @login_required
 def home_view(request):
     return render(request,'main.html',{})
@@ -28,6 +29,7 @@ def verify_view(request):
         if not request.POST:
             #send sms
             print(code_user)
+            send_sms(code_user,user.phone_number)
         if form.is_valid():
             num = form.cleaned_data.get('number')
             if str(code)==num:
